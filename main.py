@@ -1,14 +1,17 @@
-import os
-import asyncio
-from telegram import Bot
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-TOKEN = os.getenv("TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
+# === अपना Telegram Bot Token डालो ===
+TOKEN = "8236646193:AAGf-5Lybx9j5VW-DXTzL-vAifb3eMTiEiY"
 
-bot = Bot(token=TOKEN)
+# === /start command ===
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("✅ Bot is running successfully!")
 
-async def main():
-    await bot.send_message(chat_id=CHAT_ID, text="✅ Bot started successfully on Render!")
-
+# === Main bot app ===
 if __name__ == "__main__":
-    asyncio.run(main())
+    app = ApplicationBuilder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+
+    print("🤖 Bot is live... now go to Telegram and type /start to test it!")
+    app.run_polling()
